@@ -8,8 +8,6 @@ class Hand
   end
 
   def initiate_war(enemy_hand)
-    check_hand_size(self)
-    check_hand_size(enemy_hand)
 
   player_card = cards.pop
   enemy_card = enemy_hand.cards.pop
@@ -22,8 +20,34 @@ class Hand
       enemy_hand.graveyard.push(player_card,enemy_card)
     else # Time to see who wins the war!
       puts "WAR Initiated....."
-      player_war_facedown = cards.pop(3)
-      enemy_war_facedown = enemy_hand.cards.pop(3)
+        if cards.size >=4
+          player_war_facedown = cards.pop(3)
+        else
+          clear_graveyard
+
+          if cards.size >= 4
+            player_war_facedown = cards.pop(3)
+          else
+            cards_size = cards.size - 1
+            player_war_facedown = cards.pop(cards_size)
+          end
+
+        end
+
+        if enemy_hand.cards.size >= 4
+          enemy_war_facedown = enemy_hand.cards.pop(3)
+        else
+          enemy_hand.clear_graveyard
+
+          if enemy_hand.cards.size >= 4
+          enemy_war_facedown = enemy_hand.cards.pop(3)
+          else
+          enemy_cards_size = enemy_hand.cards.size - 1
+          enemy_war_facedown = enemy_hand.cards.pop(enemy_cards_size) #Leaves 1 card left for flip
+          end
+
+        end
+
 
       player_war_card = cards.pop
       puts "Player: #{player_war_card.show_card}"
@@ -37,17 +61,29 @@ class Hand
           puts "Computer wins!"
           enemy_hand.graveyard.push(player_war_facedown,enemy_war_facedown,player_card,enemy_card,player_war_card, enemy_war_card).flatten!
         end
-
     end
 
   end
 
-  def check_hand_size(hand)
-    if hand.cards.empty?
-      hand.cards.push(graveyard.flatten!)
-    elsif hand.cards.empty? && hand.graveyard.empty?
-      puts "Game over."
+
+  def clear_graveyard
+    graveyard.each {|card| cards << card}
+    graveyard.clear
+    puts "Graveyard has been moved into cards"
+    cards.shuffle
+  end
+
+  def graveyard_check
+    if cards.empty? && graveyard.empty?
+      puts "Game Over."
       exit
+    elsif graveyard.size >= 1 && cards.empty?
+      clear_graveyard
+    else
+      puts "Still cards in hand.."
     end
   end
+
+
+
 end
