@@ -27,7 +27,7 @@ class Hand
 
           if cards.size >= 4
             player_war_facedown = cards.pop(3)
-          else
+          elsif cards.size > 1
             cards_size = cards.size - 1
             player_war_facedown = cards.pop(cards_size)
           end
@@ -41,7 +41,7 @@ class Hand
 
           if enemy_hand.cards.size >= 4
           enemy_war_facedown = enemy_hand.cards.pop(3)
-          else
+          elsif enemy_hand.cards.size > 1
           enemy_cards_size = enemy_hand.cards.size - 1
           enemy_war_facedown = enemy_hand.cards.pop(enemy_cards_size) #Leaves 1 card left for flip
           end
@@ -75,7 +75,7 @@ class Hand
 
   def graveyard_check
     if cards.empty? && graveyard.empty?
-      puts "Game Over."
+      puts "Game Over. #{player} loses."
       exit
     elsif graveyard.size >= 1 && cards.empty?
       clear_graveyard
