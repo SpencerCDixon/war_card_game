@@ -80,7 +80,7 @@ class Hand
     elsif graveyard.size >= 1 && cards.empty?
       clear_graveyard
     else
-      puts "Still cards in hand.."
+      puts "Still enough cards in hand.."
     end
   end
 
